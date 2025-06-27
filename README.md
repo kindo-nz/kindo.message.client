@@ -108,7 +108,3 @@ When adding new language clients:
 - Update documentation for any API changes
 - Ensure all code passes linting and tests
 - Maintain backward compatibility when possible
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
