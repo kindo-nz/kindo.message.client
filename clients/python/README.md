@@ -68,6 +68,20 @@ message = {
     }
 }
 
+# For sensitive data, specify security_level
+sensitive_message = {
+    "event_type": "payment.processed",
+    "message_channel": "internal",
+    "behavior": "instant",
+    "security_level": "sensitive",  # Payload will be hashed for security
+    "payload": {
+        "user_id": "12345",
+        "credit_card_last4": "1234",
+        "amount": 99.99,
+        "transaction_id": "txn_abc123"
+    }
+}
+
 # Send message
 try:
     tracking_id = send_to_producer(
@@ -86,15 +100,18 @@ except RuntimeError as e:
 ```python
 from kindo_message_client.producer import send_to_producer
 
-# Custom configuration
+# Custom configuration with sensitive data
 message = {
     "event_type": "order.status_update",
     "message_channel": "sms",
     "behavior": "instant",
+    "security_level": "sensitive",  # Protect sensitive order information
     "payload": {
         "order_id": "ORD-12345",
         "status": "shipped",
-        "estimated_delivery": "2024-01-15"
+        "estimated_delivery": "2024-01-15",
+        "customer_phone": "+1234567890",
+        "shipping_address": "123 Main St, City, State"
     }
 }
 
@@ -140,6 +157,7 @@ class ProducerPayload(TypedDict):
     message_channel: str     # Message delivery channel
     behavior: Literal["instant"]  # Message behavior (currently only "instant" supported)
     payload: dict            # Message content data
+    security_level: NotRequired[Literal["sensitive", "normal"]]  # Optional security level
 ```
 
 ## Message Schema
@@ -151,9 +169,19 @@ Messages must conform to the JSON schema defined in `schemas/producer_payload.js
   "event_type": "string",
   "message_channel": "string",
   "behavior": "instant",
+  "security_level": "normal|sensitive",
   "payload": {}
 }
 ```
+
+### Security Levels
+
+The optional `security_level` field controls data protection:
+
+- **`"normal"`** (default): Payload stored as-is for full tracking visibility
+- **`"sensitive"`**: Payload automatically hashed before storage to protect sensitive data
+
+When `security_level` is not provided, it defaults to `"normal"`.
 
 ## Error Handling
 
@@ -187,7 +215,10 @@ pytest
 ### Notification System
 
 ```python
-def send_user_notification(user_id: str, message: str, channel: str):
+from datetime import datetime
+from kindo_message_client.producer import send_to_producer
+
+def send_user_notification(user_id: str, message: str, channel: str, is_sensitive: bool = False):
     payload = {
         "event_type": "user.notification",
         "message_channel": channel,
@@ -199,12 +230,22 @@ def send_user_notification(user_id: str, message: str, channel: str):
         }
     }
     
+    # Add security level for sensitive notifications
+    if is_sensitive:
+        payload["security_level"] = "sensitive"
+    
     return send_to_producer(PRODUCER_URL, payload)
+
+# Example usage
+send_user_notification("12345", "Your password has been reset", "email", is_sensitive=True)
 ```
 
 ### Event Logging
 
 ```python
+from datetime import datetime
+from kindo_message_client.producer import send_to_producer
+
 def log_system_event(event_type: str, data: dict):
     payload = {
         "event_type": f"system.{event_type}",
