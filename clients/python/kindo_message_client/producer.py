@@ -2,7 +2,7 @@ import json
 import os
 import jsonschema
 from typing import Literal, TypedDict
-from signer import signed_post
+from .signer import signed_post
 from .config import AWS_REGION, AWS_SERVICE, SCHEMA_PATH
 
 class ProducerPayload(TypedDict):
