@@ -10,6 +10,11 @@
         "type": "string",
         "enum": ["instant", "scheduled", "deferred", "long_term"]
       },
+      "security_level": {
+        "type": "string",
+        "enum": ["sensitive", "normal"],
+        "default": "normal"
+      },
       "payload": {
         "type": "object"
       }
