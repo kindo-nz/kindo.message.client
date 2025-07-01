@@ -21,8 +21,21 @@ A Python SDK for sending structured messages to the Kindo Producer Lambda servic
 
 ### Install Dependencies
 
+For development:
 ```bash
-pip install -r requirements.txt
+# From project root directory
+cd kindo.message.client
+
+# Install in editable mode with development dependencies
+pip install -e ".[dev]"
+
+# Or use the Python-specific development requirements file
+pip install -r clients/python/requirements-dev.txt
+```
+
+For end users:
+```bash
+pip install git+https://github.com/kindo-nz/kindo.message.client.git
 ```
 
 ## Configuration
@@ -378,4 +391,4 @@ When contributing to the Python client:
 2. Add type hints to all functions
 3. Include comprehensive tests
 4. Update documentation for any API changes
-5. Ensure compatibility with the shared message schema
+5. Ensure compatibility with the shared message schema 
