@@ -1,0 +1,8 @@
+include README.md
+include .gitignore
+recursive-include clients/python *.py
+recursive-include clients/python *.txt
+recursive-include clients/python *.md
+include clients/python/.env.example
+recursive-include schemas *.json
+global-include schemas/*.json 

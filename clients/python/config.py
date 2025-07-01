@@ -21,5 +21,5 @@ KINDO_MESSAGE_BEHAVIOR      = os.environ["KINDO_MESSAGE_BEHAVIOR"]
 AWS_REGION                  = os.environ.get("AWS_REGION", "ap-southeast-2")
 AWS_SERVICE                 = os.environ.get("AWS_SERVICE", "lambda")
 
-# TODO: this should be a constant, but for simplicity......
+# Schema path relative to project root
 SCHEMA_PATH = "../../schemas/producer_payload.json"
