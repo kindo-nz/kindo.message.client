@@ -22,4 +22,4 @@ AWS_REGION                  = os.environ.get("AWS_REGION", "ap-southeast-2")
 AWS_SERVICE                 = os.environ.get("AWS_SERVICE", "lambda")
 
 # TODO: this should be a constant, but for simplicity......
-SCHEMA_PATH = "../../schemas/producer_payload.json"
+SCHEMA_PATH = "schemas/producer_payload.json"
