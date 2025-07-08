@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kindo-message-client"
+version = "0.1.0"
+description = "A Python client library for sending structured messages to the Kindo Producer Lambda service"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    {name = "Kindo", email = "tech@kindo.nz"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["kindo", "messaging", "lambda", "aws", "client"]
+
+dependencies = [
+    "botocore>=1.29.0",
+    "requests>=2.28.0",
+    "jsonschema>=4.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/kindo-nz/kindo.message.client"
+Repository = "https://github.com/kindo-nz/kindo.message.client"
+Issues = "https://github.com/kindo-nz/kindo.message.client/issues"
+
+[tool.setuptools.packages.find]
+where = ["clients"]
+include = ["python*"]
+
+[tool.setuptools.package-dir]
+"kindo_message_client" = "clients/python"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"python" = ["schemas/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["clients/python/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true 

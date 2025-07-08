@@ -29,3 +29,11 @@ Thumbs.db
 
 # Environment variables
 .env
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+clients/python/schemas/  # Auto-copied schemas during build
