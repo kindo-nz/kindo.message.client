@@ -177,7 +177,6 @@ Sends a structured message to the Kindo Producer Lambda via direct ARN invocatio
 - `arn` (str): The Lambda function ARN
 - `message` (ProducerPayload): The message to send
 - `region` (str, optional): AWS region (default: from environment or "ap-southeast-2")
-- `service` (str, optional): AWS service name (default: from environment or "lambda")
 - `schema_path` (str, optional): Path to JSON schema file (default: built-in schema)
 
 #### Returns

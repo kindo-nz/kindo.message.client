@@ -41,7 +41,6 @@ def send_to_producer_via_arn(
     arn: str,
     message: ProducerPayload,
     region: str = AWS_REGION,
-    service: str = AWS_SERVICE,
     schema_path: str = SCHEMA_PATH
 ) -> str:
     with open(os.path.join(os.path.dirname(__file__), schema_path)) as f:
