@@ -14,16 +14,10 @@ class ProducerPayload(TypedDict):
     payload: dict
     security_level: NotRequired[Literal["sensitive", "normal"]]
 
-def send_to_producer(
-    url: str,
-    message: ProducerPayload,
-    region: str = AWS_REGION,
-    service: str = AWS_SERVICE
-) -> str:
+def validate_message_with_schema(message: ProducerPayload) -> None:
     # Set default security_level if not provided
     if "security_level" not in message:
         message["security_level"] = "normal"
-    
     # Load schema from package resources or local file
     try:
         # First try to load from package-local schemas (for installed package)
@@ -40,6 +34,14 @@ def send_to_producer(
         jsonschema.validate(instance=message, schema=schema)
     except jsonschema.ValidationError as e:
         raise ValueError(f"Invalid message structure: {e.message}")
+
+def send_to_producer(
+    url: str,
+    message: ProducerPayload,
+    region: str = AWS_REGION,
+    service: str = AWS_SERVICE
+) -> str:
+    validate_message_with_schema(message)
 
     response = signed_post(url, message, region, service)
     if response.status_code == 200:
@@ -52,26 +54,7 @@ def send_to_producer_via_arn(
     message: ProducerPayload,
     region: str = AWS_REGION,
 ) -> str:
-    # Set default security_level if not provided
-    if "security_level" not in message:
-        message["security_level"] = "normal"
-    
-    # Load schema from package resources or local file
-    try:
-        # First try to load from package-local schemas (for installed package)
-        schema_path = os.path.join(os.path.dirname(__file__), 'schemas/producer_payload.json')
-        with open(schema_path) as f:
-            schema = json.load(f)
-    except Exception:
-        # Fallback to project root schemas (for development)
-        schema_path = os.path.join(os.path.dirname(__file__), SCHEMA_PATH)
-        with open(schema_path) as f:
-            schema = json.load(f)
-    
-    try:
-        jsonschema.validate(instance=message, schema=schema)
-    except jsonschema.ValidationError as e:
-        raise ValueError(f"Invalid message structure: {e.message}")
+    validate_message_with_schema(message)
 
     # Use boto3 to invoke Lambda function directly via ARN
     lambda_client = boto3.client('lambda', region_name=region)
