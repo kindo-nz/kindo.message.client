@@ -12,6 +12,7 @@ The Kindo Message Client provides a standardized way for applications to send me
 - **Standardized Schema**: Consistent message format across all clients
 - **AWS Authentication**: Secure message transmission using AWS SigV4 signing
 - **Message Validation**: Built-in schema validation for message structure
+- **Security Levels**: Configurable data protection for sensitive payloads
 - **Multiple Behaviors**: Support for instant, scheduled, deferred, and long-term message delivery
 
 ## Message Schema
@@ -23,9 +24,19 @@ All clients use a standardized message format defined in `schemas/producer_paylo
   "event_type": "string",
   "message_channel": "string", 
   "behavior": "instant|scheduled|deferred|long_term",
+  "security_level": "normal|sensitive",
   "payload": {}
 }
 ```
+
+### Security Levels
+
+The `security_level` field controls how payload data is handled:
+
+- **`"normal"`** (default): Payload stored as-is for full visibility in message tracking
+- **`"sensitive"`**: Payload automatically hashed using SHA256 before storage to protect sensitive data
+
+This feature ensures that sensitive information like credit card numbers, personal data, or confidential business information is not stored in plain text while still allowing normal message processing.
 
 ## Available Clients
 
