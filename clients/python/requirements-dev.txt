@@ -1,0 +1,10 @@
+# Development requirements for kindo.message.client
+# Install this package in editable mode with all dependencies
+-e .
+
+# Include development dependencies
+-e .[dev]
+
+# Additional development tools (optional)
+# jupyterlab>=4.0.0      # For notebook development
+# pre-commit>=3.0.0      # For git hooks 
