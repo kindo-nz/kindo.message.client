@@ -51,10 +51,23 @@ def send_to_producer_via_arn(
     arn: str,
     message: ProducerPayload,
     region: str = AWS_REGION,
-    schema_path: str = SCHEMA_PATH
 ) -> str:
-    with open(os.path.join(os.path.dirname(__file__), schema_path)) as f:
-        schema = json.load(f)
+    # Set default security_level if not provided
+    if "security_level" not in message:
+        message["security_level"] = "normal"
+    
+    # Load schema from package resources or local file
+    try:
+        # First try to load from package-local schemas (for installed package)
+        schema_path = os.path.join(os.path.dirname(__file__), 'schemas/producer_payload.json')
+        with open(schema_path) as f:
+            schema = json.load(f)
+    except Exception:
+        # Fallback to project root schemas (for development)
+        schema_path = os.path.join(os.path.dirname(__file__), SCHEMA_PATH)
+        with open(schema_path) as f:
+            schema = json.load(f)
+    
     try:
         jsonschema.validate(instance=message, schema=schema)
     except jsonschema.ValidationError as e:
