@@ -14,16 +14,10 @@ class ProducerPayload(TypedDict):
     payload: dict
     security_level: NotRequired[Literal["sensitive", "normal"]]
 
-def send_to_producer(
-    url: str,
-    message: ProducerPayload,
-    region: str = AWS_REGION,
-    service: str = AWS_SERVICE
-) -> str:
+def validate_message_with_schema(message: ProducerPayload) -> None:
     # Set default security_level if not provided
     if "security_level" not in message:
         message["security_level"] = "normal"
-    
     # Load schema from package resources or local file
     try:
         # First try to load from package-local schemas (for installed package)
@@ -41,6 +35,14 @@ def send_to_producer(
     except jsonschema.ValidationError as e:
         raise ValueError(f"Invalid message structure: {e.message}")
 
+def send_to_producer(
+    url: str,
+    message: ProducerPayload,
+    region: str = AWS_REGION,
+    service: str = AWS_SERVICE
+) -> str:
+    validate_message_with_schema(message)
+
     response = signed_post(url, message, region, service)
     if response.status_code == 200:
         return response.json().get("tracking_id")
@@ -51,14 +53,8 @@ def send_to_producer_via_arn(
     arn: str,
     message: ProducerPayload,
     region: str = AWS_REGION,
-    schema_path: str = SCHEMA_PATH
 ) -> str:
-    with open(os.path.join(os.path.dirname(__file__), schema_path)) as f:
-        schema = json.load(f)
-    try:
-        jsonschema.validate(instance=message, schema=schema)
-    except jsonschema.ValidationError as e:
-        raise ValueError(f"Invalid message structure: {e.message}")
+    validate_message_with_schema(message)
 
     # Use boto3 to invoke Lambda function directly via ARN
     lambda_client = boto3.client('lambda', region_name=region)
