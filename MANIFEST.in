@@ -1,8 +1,7 @@
 include README.md
 include .gitignore
-recursive-include clients/python *.py
-recursive-include clients/python *.txt
-recursive-include clients/python *.md
-include clients/python/.env.example
+recursive-include clients/kindo_message_python_client *.py
+recursive-include clients/kindo_message_python_client *.txt
+recursive-include clients/kindo_message_python_client *.md
 recursive-include schemas *.json
 global-include schemas/*.json 
