@@ -48,19 +48,19 @@ Issues = "https://github.com/kindo-nz/kindo.message.client/issues"
 
 [tool.setuptools.packages.find]
 where = ["clients"]
-include = ["python*"]
+include = ["kindo_message_python_client*"]
 
 [tool.setuptools.package-dir]
-"kindo_message_client" = "clients/python"
+"kindo_message_client" = "clients/kindo_message_python_client"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.package-data]
-"python" = ["schemas/*.json"]
+"kindo_message_python_client" = ["schemas/*.json"]
 
 [tool.pytest.ini_options]
-testpaths = ["clients/python/tests"]
+testpaths = ["clients/kindo_message_python_client/tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

@@ -30,7 +30,7 @@ cd kindo.message.client
 pip install -e ".[dev]"
 
 # Or use the Python-specific development requirements file
-pip install -r clients/python/requirements-dev.txt
+pip install -r clients/kindo_message_python_client/requirements-dev.txt
 ```
 
 For end users:
