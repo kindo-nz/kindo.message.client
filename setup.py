@@ -11,7 +11,7 @@ class AutoSchemaCopy(build_py):
         # source schemas directory
         source_schemas = "schemas"
         # target directory (Python package)
-        target_schemas = "clients/python/schemas"
+        target_schemas = "clients/kindo_message_python_client/schemas"
         
         print(f"Auto-copying schemas: {source_schemas} -> {target_schemas}")
         

@@ -41,8 +41,8 @@ This feature ensures that sensitive information like credit card numbers, person
 ## Available Clients
 
 ### Python Client
-- **Location**: `clients/python/`
-- **Documentation**: [Python Client README](clients/python/README.md)
+- **Location**: `clients/kindo_message_python_client/`
+- **Documentation**: [Python Client README](clients/kindo_message_python_client/README.md)
 - **Features**: Full AWS SigV4 authentication, JSON schema validation, environment-based configuration
 
 *More language implementations coming soon...*
@@ -61,7 +61,7 @@ kindo.message.client/
 ├── schemas/                 # Shared message schemas
 │   └── producer_payload.json
 ├── clients/                 # Language-specific implementations
-│   ├── python/             # Python client
+│   ├── kindo_message_python_client/  # Python client
 │   └── [future clients]    # Other language implementations
 └── README.md               # This file
 ```
