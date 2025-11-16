@@ -1,6 +1,5 @@
 import json
 import os
-import pkg_resources
 import jsonschema
 from typing import Literal, TypedDict, NotRequired
 import boto3
